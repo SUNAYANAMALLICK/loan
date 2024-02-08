@@ -12,6 +12,11 @@ public class LoanConstants {
     public static final String ACCOUNT_BALANCE_FORMAT = "Account balance must have at most 10 digits, with 2 after the decimal point";
     public static final String PAYMENT_DATE_IS_MANDATORY = "payment Date is mandatory";
 
+    public static final String LOAN_NOT_FOUND = "Loan not found against customer : ";
+
+
+
+
     /****  Success Message   ****/
     public static final String LOAN_CREATED = "Loan Created.";
 

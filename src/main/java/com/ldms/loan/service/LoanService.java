@@ -7,6 +7,8 @@ import com.ldms.loan.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.ldms.loan.constant.LoanConstants.ID_LENGTH;
 import static com.ldms.loan.constant.LoanConstants.INVALID_LOAN_PRODUCT;
 
@@ -40,5 +42,9 @@ public class LoanService {
     public Long create(Loan loan) {
         validate(loan);
         return loanRepository.save(loan).getLoanId();
+    }
+
+    public List<Loan> find(Long customerId) {
+        return loanRepository.findByCustomerId(customerId);
     }
 }

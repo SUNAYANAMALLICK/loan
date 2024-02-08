@@ -59,11 +59,8 @@ public class LoanControllerTest {
         loanProductTypes = loanProductTypes.builder().loanProductId(1L).loanProductName("Fixed Rate Product").variableInterestRate("N").build();
         loanProductRepository.save(loanProductTypes);
 
-        validLoan =  new Loan().builder().loanId(123456L).loanProductId(loanProductRepository.findAll().get(0).getLoanProductId()).rate((long) 12.23).customerId(1203)
-                .currentBalance(12000L).openingBalance(10000L).paymentAmount(5000L).paymentDate(LocalDateTime.of(2024,2,22,13,20)).build();
 
-        invalidLoan = new Loan().builder().loanId(123456L).loanProductId(33L).rate((long) 12.23).customerId(1203)
-                .currentBalance(12000L).openingBalance(10000L).paymentAmount(5000L).paymentDate(LocalDateTime.of(2024,2,22,13,20)).build();
+
 
     }
 
@@ -81,15 +78,16 @@ public class LoanControllerTest {
     @Test
     void validInput_ReturnsCreated() throws Exception {
 
+        validLoan =  new Loan().builder().loanId(123456L).loanProductId(loanProductRepository.findAll().get(0).getLoanProductId()).rate((long) 12.23).customerId(1203)
+                .currentBalance(12000L).openingBalance(10000L).paymentAmount(5000L).paymentDate(LocalDateTime.of(2024,2,22,13,20)).build();
+
         mockMvc.perform(MockMvcRequestBuilders.post(path)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(validLoan)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().string("Loan Created."));
-        loanProductRepository.deleteAll();
+        loanRepository.deleteAll();
     }
-
-
 
 
 
