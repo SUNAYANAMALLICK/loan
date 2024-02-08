@@ -15,6 +15,6 @@ public class LoanProductService {
     }
 
     public boolean findByLoanProduct(final Long loanProductId){
-        return loanProductRepository.findByLoanProductId(loanProductId).orElse(false);
+        return loanProductRepository.findByLoanProductId(loanProductId).isPresent();
     }
 }

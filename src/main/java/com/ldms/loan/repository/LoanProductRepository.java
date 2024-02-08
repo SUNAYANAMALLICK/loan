@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface LoanProductRepository extends JpaRepository<LoanProductTypes, Long> {
-    public Optional<Boolean> findByLoanProductId(final Long loanProductId);
+    public Optional<LoanProductTypes> findByLoanProductId(final Long loanProductId);
 
 }
