@@ -21,8 +21,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
 
-import static org.mockito.ArgumentMatchers.any;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LoanControllerTest {
@@ -45,7 +43,9 @@ public class LoanControllerTest {
     private final String path = "/api/v1/loan";
 
 
-    private LoanProductTypes loanProductTypes;
+    private LoanProductTypes fixedRate;
+    private LoanProductTypes variableRate;
+
 
     private Loan validLoan;
 
@@ -56,10 +56,11 @@ public class LoanControllerTest {
     @BeforeEach
     void setUp() {
         // Perform setup before each test
-        loanProductTypes = loanProductTypes.builder().loanProductId(1L).loanProductName("Fixed Rate Product").variableInterestRate("N").build();
-        loanProductRepository.save(loanProductTypes);
+        fixedRate = fixedRate.builder().loanProductId(1L).loanProductName("Fixed Rate Product").variableInterestRate("N").build();
+        loanProductRepository.save(fixedRate);
 
-
+        variableRate = variableRate.builder().loanProductId(1L).loanProductName("Variable Rate Product").variableInterestRate("Y").build();
+        loanProductRepository.save(variableRate);
 
 
     }
@@ -76,10 +77,24 @@ public class LoanControllerTest {
     }
 
     @Test
-    void validInput_ReturnsCreated() throws Exception {
+    void validInput_FixedRate_ReturnsCreated() throws Exception {
 
         validLoan =  new Loan().builder().loanId(123456L).loanProductId(loanProductRepository.findAll().get(0).getLoanProductId()).rate((long) 12.23).customerId(1203)
                 .currentBalance(12000L).openingBalance(10000L).paymentAmount(5000L).paymentDate(LocalDateTime.of(2024,2,22,13,20)).build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post(path)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(validLoan)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().string("Loan Created."));
+        loanRepository.deleteAll();
+    }
+
+    @Test
+    void validInput_VariableRate_ReturnsCreated() throws Exception {
+
+        validLoan = new Loan().builder().loanId(123456L).loanProductId(loanProductRepository.findAll().get(1).getLoanProductId()).rate((long) 12.23).customerId(1203)
+                .currentBalance(12000L).openingBalance(10000L).paymentAmount(5000L).paymentDate(LocalDateTime.of(2024, 2, 22, 13, 20)).build();
 
         mockMvc.perform(MockMvcRequestBuilders.post(path)
                         .contentType(MediaType.APPLICATION_JSON)
