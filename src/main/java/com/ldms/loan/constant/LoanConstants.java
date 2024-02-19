@@ -14,6 +14,8 @@ public class LoanConstants {
 
     public static final String LOAN_NOT_FOUND = "Loan not found against customer : ";
 
+    public static final String INVALID_LOAN_PRODUCT_ID = "Invalid Loan Product ID : ";
+
 
 
 
